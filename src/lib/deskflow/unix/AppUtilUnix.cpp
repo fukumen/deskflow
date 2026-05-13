@@ -98,7 +98,9 @@ std::string AppUtilUnix::getCurrentLanguageCode()
 
   auto display = XOpenDisplay(nullptr);
   if (!display) {
-    LOG_WARN("failed to open x11 default display");
+    if (std::getenv("WAYLAND_DISPLAY") == nullptr) {
+      LOG_WARN("failed to open x11 default display");
+    }
     return result;
   }
 
