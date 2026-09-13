@@ -1,6 +1,6 @@
 app-id: org.deskflow.deskflow
 runtime: org.kde.Platform
-runtime-version: "6.10"
+runtime-version: '6.11'
 sdk: org.kde.Sdk
 command: deskflow
 finish-args:
@@ -12,7 +12,7 @@ finish-args:
   - --talk-name=org.kde.StatusNotifierWatcher
 cleanup:
   - /include
-  - "*.a"
+  - '*.a'
   - /bin/ei-debug-events
   - /lib/cmake
   - /lib/pkgconfig
@@ -35,25 +35,22 @@ modules:
           type: pypi
           name: Jinja2
           packagetype: bdist_wheel
-      - type: file
-        url: https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz
-        sha256: d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b
     cleanup:
       - '*'
   - name: libei
     buildsystem: meson
     config-opts:
-        - -Ddocumentation=[]
-        - -Dtests=disabled
-        - -Dliboeffis=disabled
+      - -Ddocumentation=[]
+      - -Dtests=disabled
+      - -Dliboeffis=disabled
     sources:
-        - type: git
-          url: https://gitlab.freedesktop.org/libinput/libei
-          tag: 1.5.0
-          commit: 19b64535408aa47abbc8151bc2c925afd6583851
-          x-checker-data:
-            type: git
-            tag-pattern: ^([\\d.]+)$
+      - type: git
+        url: https://gitlab.freedesktop.org/libinput/libei
+        tag: 1.6.0
+        commit: 8a46bf3d4b6af7f25a61be53386cf618218114ef
+        x-checker-data:
+          type: git
+          tag-pattern: ^([\\d.]+)$
   - name: libportal
     buildsystem: meson
     config-opts:
@@ -63,12 +60,14 @@ modules:
       - -Dvapi=false
       - -Dbackend-qt6=auto
     sources:
-      - type: git
-        url: https://github.com/flatpak/libportal.git
-        tag: 0.9.1
-        commit: 8f5dc8d192f6e31dafe69e35219e3b707bde71ce
-      - type: patch
-        path: libportal-qt69.patch
+      - type: archive
+        url: https://github.com/flatpak/libportal/archive/0.11.0.tar.gz
+        sha256: 71482afa68b3373268e7df7feaf96ce99eb1a6701f60ff43a0d1b2594605eae8
+        x-checker-data:
+          type: anitya
+          project-id: 230124
+          stable-only: true
+          url-template: https://github.com/flatpak/libportal/archive/$version.tar.gz
   - name: gtest
     buildsystem: cmake-ninja
     sources:
@@ -89,13 +88,15 @@ modules:
     sources:
       - type: git
         url: https://github.com/bugaevc/wl-clipboard.git
-        branch: master
+        tag: v2.3.0
         commit: 67a7b937895bceec1ae5ccebb10216f63f70ca1b
+        x-checker-data:
+          type: git
+          tag-pattern: ^v([\d.]+)$
   - name: deskflow
     buildsystem: cmake-ninja
     config-opts:
-      - "-DCMAKE_BUILD_TYPE=Release"
+      - -DCMAKE_BUILD_TYPE=Release
     sources:
       - type: dir
         path: ../../../
-
